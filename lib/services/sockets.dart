@@ -5,17 +5,28 @@ import 'package:sec_com/model/com.dart';
 import 'package:tcp_socket_connection/tcp_socket_connection.dart';
 
 class Sockets {
-  Com? com;
   Socket? socket;
+  Function? onDestroy;
+  String sig = '';
 
-  Sockets(this.com);
+  static final Sockets _instance = Sockets._internal();
 
-  Future<void> connect(Function(String) onStatusChange) async {
+  factory Sockets() {
+    return _instance;
+  }
+
+  Sockets._internal();
+
+  Future<void> connect(Com com, Function(String) onStatusChange, Function onSuccess, Function onDestroy) async {
+    sig = com.name;
+    this.onDestroy = onDestroy;
     try {
-      socket = await Socket.connect('localhost', 8372,
+      onStatusChange.call('Trying to connect...');
+      socket = await Socket.connect(com.lip, com.lport,
           timeout: const Duration(seconds: 5));
 
       socket!.writeln('Hello, server!');
+      onSuccess.call();
 
       // Listen for data from the server
       socket!.listen(
@@ -34,10 +45,12 @@ class Sockets {
 
     } catch (e) {
       print('Destination host unavailable.');
-      ServerSocket.bind('localhost', 8372).then((ServerSocket server) {
+      onStatusChange.call('Listening on port ${com.port}');
+      ServerSocket.bind(InternetAddress.anyIPv4, com.port).then((ServerSocket server) {
         print('SERVER: Binding done.');
         server.listen((socket) {
           print('SERVER: Listening..');
+          onSuccess.call();
           socket.listen(
             (data) {
               print(
@@ -60,8 +73,9 @@ class Sockets {
 
   handleMessage(Socket socket) {}
 
-  void close() {
-    socket?.close();
+  void destroy() {
+    socket?.destroy();
+    onDestroy?.call();
   }
 
 }

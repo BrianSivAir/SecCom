@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:sec_com/chat.dart';
 import 'package:sec_com/database/com_db.dart';
 import 'package:sec_com/services/cypher.dart';
 import 'package:sec_com/services/sockets.dart';
@@ -71,7 +72,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   Future<List<Com>>? futureComs;
   final comDb = ComDB();
-  Sockets? sockets;
 
   @override
   void initState() {
@@ -137,24 +137,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               final com = coms[index];
-                              var status = '';
-                              return ListTile(
-                                  title: Text(com.name),
-                                  subtitle: Text("${com.lip}:${com.lport}"),
-                                  onTap: () => {
-                                        if (sockets != null)
-                                          {
-                                            sockets!.close(),
-                                            sockets = null,
-                                          }
-                                        else
-                                          {
-                                            sockets = Sockets(com),
-                                            sockets!.connect((value) => {
-                                                  status = value
-                                                },)
-                                          }
-                                      });
+                              return ComTile(
+                                com: com,
+                              );
                             },
                             separatorBuilder: (context, index) =>
                                 const SizedBox(
@@ -172,5 +157,89 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+}
+
+class ComTile extends StatefulWidget {
+  final Com com;
+
+  const ComTile({super.key, required this.com});
+
+  @override
+  State<ComTile> createState() => _ComTileState();
+}
+
+class _ComTileState extends State<ComTile> {
+  String status = '';
+  Sockets? sockets;
+  bool connecting = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+        title: Text(widget.com.name),
+        subtitle: Text("${widget.com.lip}:${widget.com.lport}"),
+        trailing: IntrinsicWidth(
+          child: Builder(builder: (context) {
+            if (connecting) {
+              return Row(
+                children: [
+                  Text(status),
+                  Container(
+                    margin: const EdgeInsets.only(left: 10.0),
+                    child: const SizedBox(
+                      height: 20.0,
+                      width: 20.0,
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        strokeWidth: 3.0,
+                      )),
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              return const Text('');
+            }
+          }),
+        ),
+        onTap: () => {
+              if (sockets != null)
+                {
+                  sockets!.destroy(),
+                  sockets = null,
+                  setState(() {
+                    connecting = false;
+                  }),
+                }
+              else
+                {
+                  sockets = Sockets(),
+                  sockets!.destroy(),
+                  sockets!.connect(
+                      widget.com,
+                      (value) => {
+                            setState(() {
+                              status = value;
+                            })
+                          },
+                      () => {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => Chat(com: widget.com),
+                                ))
+                          },
+                      () => {
+                        print('!!!ABORTED!!!'),
+                          setState(() {
+                            connecting = false;
+                          }),
+                      }),
+                  setState(() {
+                    connecting = true;
+                  }),
+                }
+            });
   }
 }

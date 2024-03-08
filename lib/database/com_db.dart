@@ -14,36 +14,53 @@ class ComDB {
     "lip" STRING NOT NULL,
     "lport" INTEGER NOT NULL,
     "port" INTEGER NOT NULL,
+    "key" INTEGER NOT NULL,
     PRIMARY KEY ("id" AUTOINCREMENT)
     );""");
   }
 
   Future<void> insertInitialData(Database database) async {
-    const name = 'tomahawk';
-    const lip = '192.168.1.162';
+    const name = 'poco f5';
+    const lip = '192.168.1.248';
     const lport = '8372';
     const port = '7332';
+    const key = 'SYIFyvXMPTsokEHqn6gZ2wUFngIdjPjM8rYX/Ccdp2g=';
+    const nameb = 'airsurfer';
+    const lipb = '192.168.1.163';
+    const lportb = '7332';
+    const portb = '8372';
+    const keyb = 'fGn0mAVPES3fsKyLBlglXCKMLXZyIY1Oq9X7/LLvAIE=';
     await database.execute("""
     INSERT INTO $tableName 
     (
     name,
     lip,
     lport,
-    port
+    port,
+    key
     ) 
     VALUES 
     (
     "$name",
     "$lip",
     "$lport",
-    "$port"
+    "$port",
+    "$key"
+    ),
+    (
+    "$nameb",
+    "$lipb",
+    "$lportb",
+    "$portb",
+    "$keyb"
     )
     ;""");
   }
 
   Future<List<Com>> fetchAll() async {
-
     final database = await DatabaseService().database;
+    //await createTable(database);
+    //await insertInitialData(database);
     final coms = (await database.rawQuery(
         '''SELECT * FROM $tableName'''
     ) as List<Map<String, dynamic>>);
