@@ -29,7 +29,17 @@ class ComDB {
     const lipb = '192.168.1.163';
     const lportb = '7332';
     const portb = '8372';
-    const keyb = 'fGn0mAVPES3fsKyLBlglXCKMLXZyIY1Oq9X7/LLvAIE=';
+    const keyb = 'SYIFyvXMPTsokEHqn6gZ2wUFngIdjPjM8rYX/Ccdp2g=';
+    const port_name = 'poco f5 (portable)';
+    const port_lip = '192.168.199.114';
+    const port_lport = '8372';
+    const port_port = '7332';
+    const port_key = 'SYIFyvXMPTsokEHqn6gZ2wUFngIdjPjM8rYX/Ccdp2g=';
+    const port_nameb = 'airsurfer (portable)';
+    const port_lipb = '192.168.199.105';
+    const port_lportb = '7332';
+    const port_portb = '8372';
+    const port_keyb = 'SYIFyvXMPTsokEHqn6gZ2wUFngIdjPjM8rYX/Ccdp2g=';
     await database.execute("""
     INSERT INTO $tableName 
     (
@@ -53,19 +63,41 @@ class ComDB {
     "$lportb",
     "$portb",
     "$keyb"
+    ),
+    (
+    "$port_name",
+    "$port_lip",
+    "$port_lport",
+    "$port_port",
+    "$port_key"
+    ),
+    (
+    "$port_nameb",
+    "$port_lipb",
+    "$port_lportb",
+    "$port_portb",
+    "$port_keyb"
     )
     ;""");
   }
 
   Future<List<Com>> fetchAll() async {
     final database = await DatabaseService().database;
-    //await createTable(database);
-    //await insertInitialData(database);
+    // await createTable(database);
+    // await insertInitialData(database);
     final coms = (await database.rawQuery(
         '''SELECT * FROM $tableName'''
     ) as List<Map<String, dynamic>>);
     var res = coms.map((com) => Com.fromSqflite(com)).toList();
     return res;
+  }
+
+  Future<int> create({required Com com}) async {
+    final database = await DatabaseService().database;
+    return await database.rawInsert(
+        '''INSERT INTO $tableName (name, lip, lport, port, key) VALUES (?, ?, ?, ?, ?)''',
+      [com.name, com.lip, com.lport, com.port, com.key]
+    );
   }
 
 }

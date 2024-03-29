@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:sec_com/chat.dart';
 import 'package:sec_com/database/com_db.dart';
-import 'package:sec_com/services/cypher.dart';
-import 'package:sec_com/services/sockets.dart';
+import 'package:sec_com/pairing.dart';
+import 'package:sec_com/services/infrastructure/sockets_service.dart';
 
 import 'model/com.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -106,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
+        child:
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
           // children horizontally, and tries to be as tall as its parent.
@@ -120,7 +119,6 @@ class _MyHomePageState extends State<MyHomePage> {
           // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
           // action in the IDE, or press "p" in the console), to see the
           // wireframe for each widget.
-          children: <Widget>[
             FutureBuilder<List<Com>>(
                 future: futureComs,
                 builder: (context, snapshot) {
@@ -148,11 +146,17 @@ class _MyHomePageState extends State<MyHomePage> {
                             itemCount: coms.length);
                   }
                 }),
-          ],
-        ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
+        onPressed: () => {
+          Navigator
+              .of(context)
+              .push(
+                  MaterialPageRoute(
+                      builder: (_) => Pairing(onDone: () => fetchComs()),
+                  )
+          )
+        },
         tooltip: 'Add COM',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
@@ -171,7 +175,7 @@ class ComTile extends StatefulWidget {
 
 class _ComTileState extends State<ComTile> {
   String status = '';
-  Sockets? sockets;
+  SocketsService? sockets;
   bool connecting = false;
 
   @override
@@ -214,7 +218,7 @@ class _ComTileState extends State<ComTile> {
                 }
               else
                 {
-                  sockets = Sockets(),
+                  sockets = SocketsService(),
                   sockets!.destroy(),
                   sockets!.connect(
                       widget.com,
@@ -224,17 +228,27 @@ class _ComTileState extends State<ComTile> {
                             })
                           },
                       () => {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => Chat(com: widget.com),
-                                ))
+                            Navigator
+                                .of(context)
+                                .push(
+                                  MaterialPageRoute(
+                                    builder: (_) => Chat(com: widget.com),
+                                  )
+                            )
                           },
                       () => {
                         print('!!!ABORTED!!!'),
                           setState(() {
                             connecting = false;
                           }),
+                        // Navigator
+                        //     .of(context)
+                        //     .popUntil(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //         builder: (_) => Chat(com: widget.com),
+                        //       )
+                        // )
                       }),
                   setState(() {
                     connecting = true;
