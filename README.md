@@ -217,7 +217,7 @@ Link Progetto: [https://github.com/BrianSivAir/SecCom](https://github.com/BrianS
 [license-url]: https://github.com/BrianSivAir/SecCom/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/brian-sivieri
-[product-screenshot]: images/screenshot.jpg
+[product-screenshot]: images/mockup.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Flutter]: https://img.shields.io/badge/flutter-3.19.2-000000?style=for-the-badge&logo=flutter&logoColor=white
 [Android]: https://img.shields.io/badge/android-5.0-34a853?style=for-the-badge&logo=android&logoColor=34a853
