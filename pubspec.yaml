@@ -1,5 +1,5 @@
 name: sec_com
-description: "A new Flutter project."
+description: "P2P application for secure messaging."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -47,6 +47,7 @@ dependencies:
   qr_code_scanner: ^1.0.1
   network_info_plus: ^5.0.2
   permission_handler: ^11.3.1
+  path_provider: ^2.1.2
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:sec_com/database/com_db.dart';
 import 'package:sec_com/qr_reader.dart';
@@ -25,27 +27,38 @@ class Pairing extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        children: [
-          ElevatedButton(
-              onPressed: () => {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => ComQRDisplay(onDone: onDone),
-                    ))
-                  },
-              child: const Text('Generate QR')),
-          ElevatedButton(
-              onPressed: () => {
+      body: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+                onPressed: () => {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => ComQRDisplay(onDone: onDone),
+                      ))
+                    },
+                child: const Text('Generate QR')),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text("or"),
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  try {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => QRReader(onData: (Com com) {
                         print("---------------------------------------------------------------");
                         print(com.toJson());
                         pairing(com, context);
                       }),
-                    ))
-                  },
-              child: const Text('Scan QR'))
-        ],
+                    ));
+                  } catch (e) {
+                    print("#####ERROR#####: $e");
+                  }
+                },
+                child: const Text('Scan QR')),
+          ],
+        ),
       ),
     );
   }
@@ -106,17 +119,25 @@ class _ComQRDisplayState extends State<ComQRDisplay> {
               return Column(
                 children: [
                   Expanded(
-                      flex: 4, child: Center(child: QrImageView(data: jsonEncode(snapshot.data)))),
+                      flex: 4,
+                      child: Center(
+                          child: QrImageView(
+                        data: jsonEncode(snapshot.data),
+                        backgroundColor: Colors.white,
+                      ))),
                   Expanded(
                     flex: 1,
-                    child: Column(
-                      children: [
-                        Text(
-                          snapshot.data?.name ?? 'This Device',
-                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Text(snapshot.data?.lip ?? 'localhost')
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            snapshot.data?.name ?? 'This Device',
+                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          Text(snapshot.data?.lip ?? 'localhost')
+                        ],
+                      ),
                     ),
                   ),
                 ],
