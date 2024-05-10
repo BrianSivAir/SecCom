@@ -64,7 +64,7 @@
 SecCom è un'applicazione che permette di comunicare in maniera sicura e diretta con altri dispositivi.
 Si tratta di un'applicazione Peer-to-Peer che consente di scambiare messaggi cifrati e dotati di scadenza con lo scopo di migliorare la sicurezza in specifici ambiti di utilizzo.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">torna su</a>)</p>
 
 
 
@@ -87,7 +87,7 @@ L'applicazione è compatibile con le seguenti piattaforme e le relative versioni
 - ![IOS][IOS]
 - ![MacOS][MacOS]
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">torna su</a>)</p>
 
 
 
@@ -115,7 +115,7 @@ Vedi: <a href="#compatibility">Compatibilità</a>.
 
 Scarica e installa l'ultima versione dell'applicazione dalla pagina delle [releases](https://github.com/BrianSivAir/SecCom/releases).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">torna su</a>)</p>
 
 
 
@@ -151,7 +151,7 @@ Scarica e installa l'ultima versione dell'applicazione dalla pagina delle [relea
 3. Smartphone: Apertura del messaggio e inizio del conto alla rovescia
 4. Smartphone: Fine del conto alla rovescia ed eliminazione definitiva del messaggio
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">torna su</a>)</p>
 
 
 
@@ -172,7 +172,7 @@ Scarica e installa l'ultima versione dell'applicazione dalla pagina delle [relea
 
 Vedi le [issues aperte](https://github.com/BrianSivAir/SecCom/issues) per la lista completa di funzionalità proposte (e problemi noti).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">torna su</a>)</p>
 
 
 
@@ -182,9 +182,9 @@ Vedi le [issues aperte](https://github.com/BrianSivAir/SecCom/issues) per la lis
 <a name="license"></a>
 
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distribuito con licenza GPL-3.0. Vedi `LICENSE.txt` per ulteriori informazioni.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">torna su</a>)</p>
 
 
 
@@ -198,7 +198,7 @@ Brian Sivieri - briansivieri.job@gmail.com
 
 Link Progetto: [https://github.com/BrianSivAir/SecCom](https://github.com/BrianSivAir/SecCom)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">torna su</a>)</p>
 
 
 
